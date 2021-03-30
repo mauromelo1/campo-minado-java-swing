@@ -14,11 +14,20 @@ public class Campo {
 	private boolean marcadoCampo = false;
 
 	private List<Campo> vizinhos = new ArrayList<>();
+	private List<CampoObservador> observadores = new ArrayList<>();
 
 	public Campo(int linha, int coluna) {
 		this.linhaCampo = linha;
 		this.colunaCampo = coluna;
 	} // fim construtor
+
+	public void registrarObservador(CampoObservador observador) {
+		observadores.add(observador);
+	}
+	
+	private void notificarObservadores(CampoEvento evento) {
+		observadores.stream().forEach( obs -> obs.eventoOcorreu(this, evento));
+	}
 
 	boolean adicionarVizinhoCampo(Campo candidatoVizinho) {
 		boolean linhaDiferente = (linhaCampo != candidatoVizinho.linhaCampo);
@@ -43,17 +52,25 @@ public class Campo {
 	void alternarMarcacaoCampo() {
 		if (!abertoCampo) {
 			marcadoCampo = !marcadoCampo;
+			
+			if (marcadoCampo) {
+				notificarObservadores(CampoEvento.MARCAR);
+			}
+			else {
+				notificarObservadores(CampoEvento.DESMARCAR);
+			}
 		}
 	} // fim alternarMarcacaoCampo
 
 	boolean abrirCampo() {
 		if (!abertoCampo && !marcadoCampo) {
-			abertoCampo = true;
-
 			if (minadoCampo) {
-				// TODO implementar nova versão
+				notificarObservadores(CampoEvento.EXPLODIR);
+				return true;
 			} // fim if do campoMinado
-
+			
+			setAbertoCampo(true);			
+			
 			if (vizinhancaSeguraCampo()) {
 				vizinhos.forEach(v -> v.abrirCampo());
 			} // fim if vizinhancaSegura
@@ -84,6 +101,10 @@ public class Campo {
 
 	void setAbertoCampo(boolean aberto) {
 		this.abertoCampo = aberto;
+		
+		if (aberto) {			
+			notificarObservadores(CampoEvento.ABRIR);			
+		}
 	} // setAbertoCampo
 
 	public boolean isAbertoCampo() {
