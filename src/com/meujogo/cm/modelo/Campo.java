@@ -49,7 +49,7 @@ public class Campo {
 		}
 	} // fim adicionarVizinhoCampo
 
-	void alternarMarcacaoCampo() {
+	public void alternarMarcacaoCampo() {
 		if (!abertoCampo) {
 			marcadoCampo = !marcadoCampo;
 			
@@ -62,7 +62,7 @@ public class Campo {
 		}
 	} // fim alternarMarcacaoCampo
 
-	boolean abrirCampo() {
+	public boolean abrirCampo() {
 		if (!abertoCampo && !marcadoCampo) {
 			if (minadoCampo) {
 				notificarObservadores(CampoEvento.EXPLODIR);
@@ -83,7 +83,7 @@ public class Campo {
 		}
 	} // fim abrirCampo
 
-	boolean vizinhancaSeguraCampo() {
+	public boolean vizinhancaSeguraCampo() {
 		return vizinhos.stream().noneMatch(v -> v.minadoCampo);
 	} // fim vizinhancaSeguraCampo
 
@@ -130,8 +130,8 @@ public class Campo {
 		return desvendado || protegido;
 	} // fim objetivoAlcancadoCampo
 
-	long minasNaVizinhancaCampo() {
-		return vizinhos.stream().filter(v -> v.minadoCampo).count();
+	public int minasNaVizinhancaCampo() {
+		return (int)vizinhos.stream().filter(v -> v.minadoCampo).count();
 	} // fim minasNavizinhancaCampo
 
 	void reiniciarCampo() {
