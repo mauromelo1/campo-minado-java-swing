@@ -138,6 +138,7 @@ public class Campo {
 		abertoCampo = false;
 		minadoCampo = false;
 		marcadoCampo = false;
+		notificarObservadores(CampoEvento.REINICIAR);
 	} // fim reiniciarCampo
 
 } // fim da Class Campo

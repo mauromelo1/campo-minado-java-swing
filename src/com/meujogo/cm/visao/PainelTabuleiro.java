@@ -2,7 +2,9 @@ package com.meujogo.cm.visao;
 
 import java.awt.GridLayout;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import com.meujogo.cm.modelo.Tabuleiro;
 
@@ -13,11 +15,17 @@ public class PainelTabuleiro extends JPanel {
 		setLayout(new GridLayout(tabuleiro.getLinhasTabuleiro(), tabuleiro.getColunasTabuleiro()));
 
 		tabuleiro.paraCadaCampo(c -> add(new BotaoCampo(c)));
-		
-		tabuleiro.registrarObservador( e -> {
-			// TODO mostrar resultado para o usuário!
-		});
 
+		SwingUtilities.invokeLater(() -> {
+			tabuleiro.registrarObservador(e -> {
+				if (e.isGanhou()) {
+					JOptionPane.showMessageDialog(this, "Ganhou :)");
+				} else {
+					JOptionPane.showMessageDialog(this, "Perdeu :(");
+				}
+				tabuleiro.reiniciarTabuleiro();
+			});
+		});
 	}
 
 }

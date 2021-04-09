@@ -5,5 +5,6 @@ public enum CampoEvento {
 	ABRIR,
 	MARCAR, 
 	DESMARCAR,
-	EXPLODIR
+	EXPLODIR,
+	REINICIAR
 }
